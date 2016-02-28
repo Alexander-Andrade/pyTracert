@@ -154,7 +154,7 @@ if __name__ == '__main__':
     # traceroute.trace(30)
     # tr = Traceroute(sys.argv[1], proc_id)
     # tr.send_ping(1)
-    a = 5
+
 
 
 
