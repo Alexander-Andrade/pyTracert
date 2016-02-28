@@ -9,8 +9,29 @@ from icmp_packet import*
 
 class Tracert:
 
-    def __init__(self):
-        pass
+    ICMP_ECHO_REQ_TYPE = 8
+    ICMP_ECHO_REQ_CODE = 0
+
+    def __init__(self, target):
+        self.target_ip = getaddrinfo(target, 'http', AF_INET)
+        self.host_ip = '192.168.1.3'
+        # id of the running process
+        self.proc_id = os.getpid() & 0xffff
+        self.ttl = 1
+        self.timeout = 3
+        self.max_hops = 30
+        # ports to send the ICMP Request ( it would be nice if they are closed )
+        self.unused_ports = [33460, 36230, 58203]
+        self.send_sock = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)
+        self.catch_sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)
+        self.catch_sock.bind(('0.0.0.0', 0))
+        self.catch_sock.settimeout(self.timeout)
+
+    def ping(self, ttl):
+        # send ICMP Echo-Request and catch ICMP Echo-Reply or ICMP Destination Unreachable
+        ip_header = IP_Header(self.proc_id, ttl, IPPROTO_ICMP, self.host_ip, self.target_ip)
+        icmp_pack = ICMP_Packet(Tracert.ICMP_ECHO_REQ_TYPE, Tracert.ICMP_ECHO_REQ_CODE, self.proc_id, ttl)
+        self.send_sock.sendto(ip_header.pack() + icmp_pack.pack(), (self.target_ip, ))
 
 def send_ping(src_ip, dst_ip, process_id):
     send_sock = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)
@@ -24,14 +45,8 @@ def send_ping(src_ip, dst_ip, process_id):
 
 
 if __name__ == '__main__':
-    # get id of the process
-    proc_id = os.getpid() & 0xffff
-    dst_ip = getaddrinfo(sys.argv[1], 'http', AF_INET)[0][4][0]
-    send_ping('192.168.1.3', dst_ip, proc_id)
-    # traceroute = UDP_Traceroute(sys.argv[1],30)
-    # traceroute.trace(30)
-    # tr = Traceroute(sys.argv[1], proc_id)
-    # tr.send_ping(1)
+    pass
+
 
 
 
