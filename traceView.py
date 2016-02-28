@@ -13,8 +13,8 @@ class TraceView(ttk.Frame):
         self.dest_label = ttk.Label(self.dest_frame, text='target', anchor='center', font='Arial 12 bold')
         self.dest_text = ttk.Entry(self.dest_frame)
         self.dest_text.focus_set()
-        self.dest_button = ttk.Button(self.dest_frame, text='trace') #command=self.trace
-        self.dest_button.bind('<Button-1>', self.trace)
+        self.dest_button = ttk.Button(self.dest_frame, text='trace', command=self.trace)
+        self.bind_all('<Return>', self.trace)
         self.dest_label.pack(side='right', fill=X, expand=YES)
         self.dest_text.pack(side='right', fill=X, expand=YES)
         self.dest_button.pack(side='left', fill=X, expand=YES)
@@ -41,7 +41,7 @@ class TraceView(ttk.Frame):
     def timeStamp(time):
         return str(round(time*1000, 5))+'ms'
 
-    def trace(self, event):
+    def trace(self, event=None):
         self.clearView()
         try:
             if self.dest_text.get() != '':
