@@ -33,8 +33,15 @@ class TraceView(ttk.Frame):
         self.tree.pack(fill=BOTH, expand=YES)
 
     def trace(self):
-        tracert = Tracert(self.dest_text.get())
-        table = tracert.trace()
+        if self.dest_text.get() != '':
+            tracert = Tracert(self.dest_text.get())
+            for i in range(1, tracert.max_hops):
+                ping_res = tracert.ping(i)
+                if ping_res is not None:
+                    self.tree.insert('', 'end', values=(ping_res[0], ping_res[1], ping_res[2], str(round(ping_res[3][0]*1000, 5))+'ms'))
+                    if ping_res[4]:
+                        break
+
 
 
 if __name__ == '__main__':

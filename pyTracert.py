@@ -61,7 +61,7 @@ class Tracert:
         for i in range(1, self.max_hops):
             ping_results = self.ping(i)
             if ping_results is not None:
-                trace_table.append(ping_results[:3])
+                trace_table.append(ping_results[:4])
                 if ping_results[4]:
                     break
         return trace_table
