@@ -3,6 +3,7 @@ import struct
 
 
 class IP_Header:
+
     def __init__(self, pack_id=0, ttl=0, proto=0, src_addr=None, dst_addr=None):
         self.version = 4
         # size in octets?
