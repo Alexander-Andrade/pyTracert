@@ -5,7 +5,14 @@ from checksum import*
 
 
 class ICMP_Packet:
-    def __init__(self, icmp_type, code, icmp_id, sequence):
+
+    ICMP_ECHO_REPLY_TYPE = 0
+    ICMP_ECHO_REPLY_CODE = 0
+    ICMP_TIME_EXCEEDED_TYPE = 11
+    ICMP_TIME_EXCEEDED_CODE = 0
+
+
+    def __init__(self, icmp_type=0, code=0, icmp_id=0, sequence=0):
         self.type = icmp_type            # 8
         self.code = code                # 8
         self.checksum = 0               # 16
@@ -28,3 +35,12 @@ class ICMP_Packet:
         self.header = struct.pack('!BBHHH', self.type, self.code, htons(checksum), self.id, self.sequence)
         self.packet = self.header + self.data
         return self.packet
+
+    def unpack(self, packet):
+        self.packet = packet[20:]
+        # define data field config by the ICMP type and code
+        self.type, self.code, self.checksum = struct.unpack('!BBH', self.packet[:4])
+        # if ICMP Echo-Reply
+
+        if self.type == ICMP_Packet.ICMP_TIME_EXCEEDED_TYPE and self.code == ICMP_Packet.ICMP_TIME_EXCEEDED_CODE:
+            pass

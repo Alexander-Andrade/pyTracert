@@ -37,25 +37,11 @@ class Tracert:
             icmp_pack = ICMP_Packet(Tracert.ICMP_ECHO_REQ_TYPE, Tracert.ICMP_ECHO_REQ_CODE, self.proc_id, self.icmp_seq_num)
             self.send_sock.sendto(ip_header.pack() + icmp_pack.pack(), (self.target_ip, port))
             icmp_reply, host_addr = self.catch_sock.recvfrom(1024)
-            ip_header_bytes = icmp_reply[0:20]
             repl_ip_header = IP_Header()
+            repl_icmp_pack = ICMP_Packet()
             repl_ip_header.unpack(icmp_reply)
+            repl_icmp_pack.unpack(icmp_reply)
             self.icmp_seq_num += 1
-
-    @staticmethod
-    def __parse_icmp_reply(self,icmp_reply):
-        pass
-
-
-def send_ping(src_ip, dst_ip, process_id):
-    send_sock = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)
-    catch_sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)
-    catch_sock.bind(('0.0.0.0', 0))
-    ip_header = IP_Header(process_id, 6, IPPROTO_ICMP, src_ip, dst_ip)
-    icmp_pack = ICMP_Packet(8, 0, process_id, 1)
-    send_sock.sendto(ip_header.pack() + icmp_pack.pack(), (dst_ip, 34000))
-    datagram, addr = catch_sock.recvfrom(1024)
-    print(addr)
 
 
 if __name__ == '__main__':

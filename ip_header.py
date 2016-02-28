@@ -32,9 +32,9 @@ class IP_Header:
         return self.header
 
     def unpack(self, packet):
-        b_header = packet[:20]
-        ver_hsize, self.tos, self.total_len, self.id, self.flag_offset, self.ttl, self.proto, self.checksum, b_src_addr, b_dst_addr = struct.unpack('!BBHHHBBH4s4s', b_header)
+        self.header = packet[:20]
+        ver_hsize, self.tos, self.total_len, self.id, self.flag_offset, self.ttl, self.proto, self.checksum, b_src_addr, b_dst_addr = struct.unpack('!BBHHHBBH4s4s', self.header)
         self.version = ver_hsize >> 4
         self.h_size = ver_hsize & 0xF
         self.src_addr = inet_ntoa(b_src_addr)
-        self.dst_addr - inet_ntoa(b_dst_addr)
+        self.dst_addr = inet_ntoa(b_dst_addr)
