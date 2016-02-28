@@ -39,7 +39,7 @@ class UDP_Traceroute:
         self.port = 33434
         self.recv_sock = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)
         self.send_sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)
-        self.recv_sock.bind(('0.0.0.0',0))
+        self.recv_sock.bind(('0.0.0.0', 0))
 
     def trace(self, max_hops):
         # for ttl in range(1,max_hops):

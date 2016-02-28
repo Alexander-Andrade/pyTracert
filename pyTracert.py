@@ -5,8 +5,12 @@ import time
 import os
 from ip_header import*
 from icmp_packet import*
-from checksum import*
 
+
+class Tracert:
+
+    def __init__(self):
+        pass
 
 def send_ping(src_ip, dst_ip, process_id):
     send_sock = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)
@@ -17,8 +21,6 @@ def send_ping(src_ip, dst_ip, process_id):
     send_sock.sendto(ip_header.pack() + icmp_pack.pack(), (dst_ip, 34000))
     datagram, addr = catch_sock.recvfrom(1024)
     print(addr)
-
-
 
 
 if __name__ == '__main__':
