@@ -19,7 +19,7 @@ class Tracert:
         self.host_ip = '192.168.1.3'
         # id of the running process
         self.proc_id = os.getpid() & 0xffff
-        self.timeout = 3
+        self.timeout = 1
         self.max_hops = 30
         # ports to send the ICMP Request ( it would be nice if they are closed )
         self.unused_ports = [33460, 36230, 58203]
