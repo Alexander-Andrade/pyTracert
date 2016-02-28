@@ -19,7 +19,6 @@ class Tracert:
         self.host_ip = '192.168.1.3'
         # id of the running process
         self.proc_id = os.getpid() & 0xffff
-        self.ttl = 1
         self.timeout = 3
         self.max_hops = 30
         # ports to send the ICMP Request ( it would be nice if they are closed )
@@ -57,18 +56,17 @@ class Tracert:
         # ttl, domain name, IPv4, [time1..time3]
         return ttl, getfqdn(repl_ip_header.src_addr), repl_ip_header.src_addr, time_stamps, fl_dest_reached
 
+    def trace(self):
+        trace_table = []
+        for i in range(1, self.max_hops):
+            ping_results = self.ping(i)
+            if ping_results is not None:
+                trace_table.append(ping_results[:3])
+                if ping_results[4]:
+                    break
+        return trace_table
 
-if __name__ == '__main__':
-    tracert = Tracert('docs.python.org')
-    print(gethostbyname('docs.python.org'))
-    fl_reached = False
-    for i in range(1, 255):
-        ping_results = tracert.ping(i)
-        print(ping_results)
-        if ping_results is not None:
-            fl_reached = ping_results[4]
-            if fl_reached:
-                break
+
 
 
 
