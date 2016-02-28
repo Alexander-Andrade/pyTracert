@@ -32,15 +32,21 @@ class TraceView(ttk.Frame):
         self.tree.heading('rtt', text='RTT')
         self.tree.pack(fill=BOTH, expand=YES)
 
+    def clearView(self):
+        for child in self.tree.get_children():
+            self.tree.delete(child)
     def trace(self):
+        self.clearView()
         if self.dest_text.get() != '':
             tracert = Tracert(self.dest_text.get())
             for i in range(1, tracert.max_hops):
                 ping_res = tracert.ping(i)
                 if ping_res is not None:
                     self.tree.insert('', 'end', values=(ping_res[0], ping_res[1], ping_res[2], str(round(ping_res[3][0]*1000, 5))+'ms'))
+                    self.tree.update()
                     if ping_res[4]:
                         break
+
 
 
 
