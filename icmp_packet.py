@@ -1,5 +1,7 @@
 from socket import*
 import struct
+import time
+from checksum import*
 
 
 class ICMP_Packet:
