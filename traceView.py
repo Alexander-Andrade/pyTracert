@@ -63,5 +63,6 @@ if __name__ == '__main__':
     root = Tk()
     trace_view = TraceView(master=root)
     trace_view.master.title('traceroute')
+    trace_view.master.geometry('800x600')
     trace_view.mainloop()
 
